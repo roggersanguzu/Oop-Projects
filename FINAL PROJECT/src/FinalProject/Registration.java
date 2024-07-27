@@ -12,12 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Group Work
- * Participants Roggers Anguzu
- * Jacob Aluvanze
- */
+/*@author ~Group
+ * Roggers Anguzu 667137
+ * Lina Mukashumbusho 667159
+ * Jacob Aluvanze 666305
+ * Salim Mwatsefu 668327*/
 
 
 public class Registration extends javax.swing.JFrame {

@@ -7,14 +7,11 @@ package GroupWorksInheritanceWork;
 import java.awt.TextArea;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author ~CyberCodex
+/*@author ~Group
  * Roggers Anguzu 667137
  * Lina Mukashumbusho 667159
  * Jacob Aluvanze 666305
- * Salim Mwatsefu 668327
- */
+ * Salim Mwatsefu 668327*/
 public class Iphone extends SmartPhones{
     public String CameraType;
     

@@ -3,6 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package GroupWorksInheritanceWork;
+/*
+@author ~Group
+ * Roggers Anguzu 667137
+ * Lina Mukashumbusho 667159
+ * Jacob Aluvanze 666305
+ * Salim Mwatsefu 668327*/
 
 import java.awt.TextArea;
 import javax.swing.JOptionPane;
@@ -56,7 +62,7 @@ public class SmartPhones {
         String camera = JOptionPane.showInputDialog(null,"Enter the Phone Camera: ");
         int price = Integer.parseInt(x);
         
-       
+       //hobgougougoiufgifyufoyfuofouy
         
         if(name.equalsIgnoreCase("iphone")){
              Iphone one=new Iphone(name,model,color,price,camera);
