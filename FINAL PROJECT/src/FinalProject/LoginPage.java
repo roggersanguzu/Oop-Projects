@@ -4,17 +4,32 @@
  */
 package FinalProject;
 
+import java.sql.*;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
- * @author ~CyberCodex
+ * @author Group
  */
 public class LoginPage extends javax.swing.JFrame {
 
     /**
      * Creates new form LoginPage
      */
+    Connection cn;
+    PreparedStatement pst;
+    ResultSet rs;
+    
+    
     public LoginPage() {
         initComponents();
+        EstablishDatabaseConnection();
     }
 
     /**
@@ -30,9 +45,9 @@ public class LoginPage extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        use = new javax.swing.JTextField();
+        txtusername = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtpassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,19 +57,24 @@ public class LoginPage extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(153, 50, 204));
         jButton1.setForeground(new java.awt.Color(204, 255, 255));
         jButton1.setText("LOGIN");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("         ADMINISTRATOR LOGIN");
 
         jLabel2.setText("Username:");
 
-        use.setBackground(new java.awt.Color(204, 255, 255));
-        use.setForeground(new java.awt.Color(0, 0, 0));
+        txtusername.setBackground(new java.awt.Color(204, 255, 255));
+        txtusername.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel3.setText("Password:");
 
-        jPasswordField1.setBackground(new java.awt.Color(204, 255, 255));
-        jPasswordField1.setForeground(new java.awt.Color(0, 0, 0));
+        txtpassword.setBackground(new java.awt.Color(204, 255, 255));
+        txtpassword.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -72,10 +92,10 @@ public class LoginPage extends javax.swing.JFrame {
                         .addGap(123, 123, 123)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                            .addComponent(use)
+                            .addComponent(txtusername)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPasswordField1))))
-                .addContainerGap(103, Short.MAX_VALUE))
+                            .addComponent(txtpassword))))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,11 +105,11 @@ public class LoginPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(use, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(94, Short.MAX_VALUE))
@@ -99,7 +119,9 @@ public class LoginPage extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,7 +129,30 @@ public class LoginPage extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String username = txtusername.getText(),password = txtpassword.getText();
+        AddContentToDatabases();
+        if(username.equals("group")&&password.equals("group")){
+             JOptionPane.showMessageDialog(null, "Login Successfull!");
+             Registration Reg=new Registration();
+             Reg.show();
+             dispose();
+            txtpassword.setText(null);
+            txtusername.setText(null);
+           
+        }else{
+            JOptionPane.showMessageDialog(null, "Something Fishy, try again!");
+            txtpassword.setText(null);
+            txtusername.setText(null);
+            
+        }
+         
+      
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,6 +188,44 @@ public class LoginPage extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    
+     private void EstablishDatabaseConnection() {
+        
+        try{
+                     
+          cn=DriverManager.getConnection("jdbc:mysql://localhost/employee_databases", "root", null);
+          pst=cn.prepareStatement("select * from login", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+          rs=pst.executeQuery();
+          JOptionPane.showMessageDialog(null, "Connection is successfully Established");
+       }
+       catch(Exception e)
+       {
+           e.printStackTrace();
+       }        
+    }
+     
+      private void AddContentToDatabases(){
+        try{
+            pst=cn.prepareStatement("insert into login values (?, ?) ");
+            pst.setString(1, txtusername.getText());
+            pst.setString(2, txtpassword.getText());
+            
+            pst.executeUpdate(); 
+           JOptionPane.showMessageDialog(null, "Logins have been Saved For Audit");
+           
+            txtusername.setText(null);
+            txtpassword.setText(null);
+            txtusername.requestFocus();
+        }
+         catch(Exception e)
+       {
+           //System.out.print(e);
+           e.printStackTrace();
+       }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -150,7 +233,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField use;
+    private javax.swing.JPasswordField txtpassword;
+    private javax.swing.JTextField txtusername;
     // End of variables declaration//GEN-END:variables
 }
